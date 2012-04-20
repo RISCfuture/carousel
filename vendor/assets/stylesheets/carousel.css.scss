@@ -1,0 +1,35 @@
+@import "vars";
+@import "compass/css3/box";
+@import "compass/css3/border-radius";
+
+@mixin carousel {
+    @include border-radius(5px);
+
+    margin-top: 1em;
+
+    >li {
+        margin: 0.5em;
+        width: 140px;
+    }
+
+    figcaption {
+        text-align: center;
+        font-size: 10pt;
+    }
+}
+
+ul.carousel-horizontal {
+    @include carousel;
+    @include display-box;
+    @include box-orient(horizontal);
+
+    overflow-x: auto;
+}
+
+ul.carousel-vertical {
+    @include carousel;
+
+    overflow-y: auto;
+    max-height: 400px;
+    width: 170px;
+}
