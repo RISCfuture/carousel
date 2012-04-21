@@ -7,6 +7,7 @@ gem 'jquery-rails'
 group :development do
   # DOCS
   gem 'yard'
+  gem 'redcarpet'
 
   # DEVELOPMENT
   gem 'bundler'

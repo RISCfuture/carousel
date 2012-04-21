@@ -1,4 +1,25 @@
+# An image carousel. Loads images from an Ajax endpoint and displays them in a
+# grid. Clicking an image reveals it in a lightbox. The carousel uses infinite
+# scrolling.
+#
+# The endpoint must return data in a specific format; see the README.md file.
+#
+# Use the `$(...).carousel(...)` method for a more jQuery-like syntax.
+#
 class Carousel
+
+  # Creates a new carousel manager.
+  #
+  # @param [jQuery element array] element The element to render the carousel
+  # into.
+  # @param [String] url The Ajax JSON endpoint that returns image metadata.
+  # @param [String] orientation Either 'horizontal' or 'vertical'.
+  # @param [Object] options Additional options.
+  # @option options [Boolean] captions (true) Whether to display captions next
+  #   to images. (Captions are always displayed in lightboxes.)
+  # @option options [Boolean] lightboxes (true) Whether to enable lightbox
+  #   functionality.
+  #
   constructor: (@element, @url, @orientation, @options={}) ->
     @options = $.extend({ captions: true, lightboxes: true }, @options)
     @element.addClass "carousel-#{@orientation}"
@@ -7,6 +28,8 @@ class Carousel
     this.refresh()
     this.setScroll()
 
+  # Reloads images from the endpoint.
+  #
   refresh: ->
     this.clear()
     $.ajax @url,
@@ -16,10 +39,13 @@ class Carousel
       success: (data) =>
         this.populate data
 
+  # Empties this carousel of images.
+  #
   clear: ->
     @element.find('>li').remove()
     @data = []
 
+  # @private
   populate: (data) ->
     @data = @data.concat(data) # must clone it
 
@@ -45,30 +71,41 @@ class Carousel
 
     this.loadNextPage() if this.noScroll() and data.length > 0
 
+  # Replaces the contents of this carousel with an error message.
+  #
+  # @param [String] error The error message.
   setError: (error) ->
     this.clear()
     li = $('<li/>').addClass('center').appendTo @element
     $('<p/>').addClass('error').text(error).appendTo li
 
+  # Replaces the contents of this carousel with a message.
+  #
+  # @param [String] note The message.
+  #
   setNote: (note) ->
     this.clear()
     li = $('<li/>').addClass('center').appendTo @element
     $('<p/>').addClass('note').text(note).appendTo li
 
+  # @private
   setScroll: ->
     @element.scroll =>
       this.loadNextPage() if this.isAtEnd()
 
+  # @private
   noScroll: ->
     switch @orientation
       when 'horizontal' then @element.width() == @element[0].scrollWidth
       when 'vertical' then @element.height() == @element[0].scrollHeight
 
+  # @private
   isAtEnd: ->
     switch @orientation
       when 'horizontal' then @element.scrollLeft() == @element[0].scrollWidth - @element.width()
       when 'vertical' then @element.scrollTop() == @element[0].scrollheight - @element.height()
 
+  # @private
   loadNextPage: ->
     return if @data.length == 0
     $.ajax @url,
@@ -80,5 +117,12 @@ class Carousel
         this.populate data
 
 $.fn.extend
+
+  # Renders a new carousel into the target.
+  # @param [String] url The Ajax JSON endpoint that returns image metadata.
+  # @param [String] orientation Either 'horizontal' or 'vertical'.
+  # @param [Object] options Additional options to pass to {Carousel}.
+  # @return [Carousel] The new carousel manager.
+  #
   carousel: (url, orient, options={}) ->
     new Carousel(this, url, orient, options)
