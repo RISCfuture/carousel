@@ -103,7 +103,7 @@ class Carousel
   isAtEnd: ->
     switch @orientation
       when 'horizontal' then @element.scrollLeft() == @element[0].scrollWidth - @element.width()
-      when 'vertical' then @element.scrollTop() == @element[0].scrollheight - @element.height()
+      when 'vertical' then @element.scrollTop() == @element[0].scrollHeight - @element.height()
 
   # @private
   loadNextPage: ->
