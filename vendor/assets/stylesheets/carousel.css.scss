@@ -18,8 +18,8 @@
 
 ul.carousel-horizontal {
     @include carousel;
-    display: box;
-    box-orient: horizontal;
+    display: flex;
+	flex-flow: row nowrap;
 
     overflow-x: auto;
 }
