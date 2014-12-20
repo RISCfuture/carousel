@@ -5,7 +5,7 @@
 
     margin-top: 1em;
 
-    >li {
+    &>li {
         margin: 0.5em;
         width: 140px;
     }
@@ -22,6 +22,10 @@ ul.carousel-horizontal {
 	flex-flow: row nowrap;
 
     overflow-x: auto;
+	
+	&>li {
+		flex: 0 0 auto;
+	}
 }
 
 ul.carousel-vertical {
