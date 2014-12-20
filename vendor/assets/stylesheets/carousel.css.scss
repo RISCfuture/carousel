@@ -1,9 +1,7 @@
 @import "vars";
-@import "compass/css3/box";
-@import "compass/css3/border-radius";
 
 @mixin carousel {
-    @include border-radius(5px);
+    border-radius: 5px;
 
     margin-top: 1em;
 
@@ -20,8 +18,8 @@
 
 ul.carousel-horizontal {
     @include carousel;
-    @include display-box;
-    @include box-orient(horizontal);
+    display: box;
+    box-orient: horizontal;
 
     overflow-x: auto;
 }
